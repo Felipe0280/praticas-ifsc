@@ -53,6 +53,7 @@ public class Agenta {
 			}catch(IOException e) {
 				System.out.println("Erro ao ler o arquivo: "+ e.getMessage());
 			}
+			return null;
 		}
 			
 }
