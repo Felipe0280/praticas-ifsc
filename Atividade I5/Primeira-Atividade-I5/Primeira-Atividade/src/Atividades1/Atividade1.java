@@ -1,4 +1,4 @@
-package Atividades;
+package Atividades1;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -21,7 +21,7 @@ public class Atividade1 {
 				escrita.write(num + "x"+ i +"="+(num*i));
 				escrita.newLine();
 			}
-			System.out.println("Arquivo "+nome+" 2com a tabuada salvo!");
+			System.out.println("Arquivo "+nome+" com a tabuada salvo!");
 		}catch (IOException e) {
 			System.out.println("Erro na escrita do arquivo: ");
 			e.getMessage();			
