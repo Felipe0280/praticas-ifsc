@@ -1,0 +1,6 @@
+controller\CadastroClienteController.class
+controller\PrincipalController.class
+module-info.class
+controller\PesquisaController.class
+controller\SomarController.class
+principal\App.class
