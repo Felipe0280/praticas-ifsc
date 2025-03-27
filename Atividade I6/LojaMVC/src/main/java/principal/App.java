@@ -1,6 +1,6 @@
 package principal;
 
-import controllers.LoginController;
+import controller.LoginController;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,14 +19,17 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("Login");
-        URL url = new File("src/main/java/view/login.fxml").toURI().toURL();
+        
+        //Interface do view
+        URL url = new File("src/main/java/view/Login.fxml").toURI().toURL();
         FXMLLoader loader = new FXMLLoader(url);
         
+        //Carregar a interface
         Parent root = loader.load();
         
+        //Palco
         Stage telaLogin = new Stage();
         LoginController lc = loader.getController();
-        
         lc.setStage(telaLogin);
         telaLogin.setOnShown(event -> {
             lc.abrirJanela();
@@ -36,7 +39,9 @@ public class App extends Application {
         
         telaLogin.setScene(scene);
         telaLogin.show();
+
     }
+
 
     public static void main(String[] args) {
         launch();
