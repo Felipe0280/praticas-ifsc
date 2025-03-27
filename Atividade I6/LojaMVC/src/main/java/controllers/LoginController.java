@@ -1,5 +1,7 @@
 package controllers;
 
+import dal.ConexaoBD;
+import java.sql.Connection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,6 +14,7 @@ public class LoginController {
     
     private Stage stageLogin;
 
+    private Connection conexão;
     @FXML
     private Button btnFechar;
 
@@ -41,8 +44,18 @@ public class LoginController {
         this.stageLogin = stage;
     }
     
-    public void abrirJanela(){
-        System.out.print("chegou aqui");
+  
+    
+    public void verificarBanco(){
+        this.conexão = ConexaoBD.conectar();
+        if(this.conexão != null){
+            System.out.println("Conectou no banco de dados com sucesso");
+        }else{
+            System.out.println("Deu probleminha viu");
+        }
     }
-
+    
+    public void abrirJanela(){
+        verificarBanco();
+    }
 }
