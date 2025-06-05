@@ -1,5 +1,3 @@
-dal\ConexaoBD.class
-controller\LoginController.class
-controllers\LoginController.class
 module-info.class
 principal\App.class
+controller\LoginController.class

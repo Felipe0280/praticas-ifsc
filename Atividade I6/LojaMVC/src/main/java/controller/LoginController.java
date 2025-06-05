@@ -8,15 +8,19 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+
 public class LoginController {
     
     private Stage stageLogin;
     
-     @FXML
+   @FXML
     private Button btnFechar;
 
     @FXML
     private Button btnLogar;
+
+    @FXML
+    private Label lblConexaocomobancodedados;
 
     @FXML
     private Label lblSenha;
@@ -28,11 +32,11 @@ public class LoginController {
     private PasswordField txtSenha;
 
     @FXML
-    private TextField txtUsuario;
+    private TextField txtUsuario; 
     
-        @FXML
+      @FXML
     void btnFecharClick(ActionEvent event) {
-        System.exit(0);
+         System.exit(0);
     }
 
     @FXML
@@ -45,7 +49,6 @@ public class LoginController {
     }
     
     public void abrirJanela(){
-        System.out.println("Janela foi exibida!");
+        System.out.println("janela foi exibida!");
     }
-    
 }
