@@ -1,7 +1,7 @@
-
 package model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -19,10 +19,10 @@ public class Usuario implements Serializable {
     private String senha;
     private String perfil;
     private String email;
-    private LocalDate aniversario;
+    private Date aniversario;
 
     // Método construtor com todos os parâmetros
-    public Usuario(int id, String nome, String fone, String login, String senha, String perfil, String email, LocalDate aniversario) {
+    public Usuario(int id, String nome, String fone, String login, String senha, String perfil, String email, Date aniversario) {
         this.id = id;
         this.nome = nome;
         this.fone = fone;
@@ -34,7 +34,7 @@ public class Usuario implements Serializable {
     }
 
     // Método construtor com todos os parâmetros menos ID
-    public Usuario(String nome, String fone, String login, String senha, String perfil, String email, LocalDate aniversario) {
+    public Usuario(String nome, String fone, String login, String senha, String perfil, String email, Date aniversario) {
         this.nome = nome;
         this.fone = fone;
         this.login = login;
@@ -102,6 +102,22 @@ public class Usuario implements Serializable {
     public void setPerfil(String perfil) {
         this.perfil = perfil;
     }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getAniversario() {
+        return aniversario;
+    }
+
+    public void setAniversario(Date aniversario) {
+        this.aniversario = aniversario;
+    }
 
     private transient IntegerProperty idProperty;
 
@@ -119,22 +135,6 @@ public class Usuario implements Serializable {
             nomeProperty = new SimpleStringProperty(nome);
         }
         return nomeProperty;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getAniversario() {
-        return aniversario;
-    }
-
-    public void setAniversario(LocalDate aniversario) {
-        this.aniversario = aniversario;
     }
 
     private transient StringProperty foneProperty;
@@ -174,6 +174,7 @@ public class Usuario implements Serializable {
     }
     
     private transient StringProperty emailProperty;
+
     public StringProperty emailProperty() {
         if (emailProperty == null) {
             emailProperty = new SimpleStringProperty(email);
@@ -181,12 +182,14 @@ public class Usuario implements Serializable {
         return emailProperty;
     }
     
-    private transient ObjectProperty<LocalDate> aniverProperty;
-    public ObjectProperty<LocalDate> aniverProperty() {
-        if (aniverProperty == null) {
-            aniverProperty = new SimpleObjectProperty<LocalDate>(aniversario);
+    private transient ObjectProperty<LocalDate> aniversarioProperty;
+
+    
+    public ObjectProperty<LocalDate> aniversarioProperty() {
+        if (aniversarioProperty == null) {
+            aniversarioProperty = new SimpleObjectProperty<>();
         }
-        return aniverProperty;
+        return aniversarioProperty;
     }
 
 }

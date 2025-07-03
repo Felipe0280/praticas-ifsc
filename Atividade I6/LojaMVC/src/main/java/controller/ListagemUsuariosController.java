@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -123,30 +124,35 @@ public class ListagemUsuariosController {
             colunaEmail.setCellValueFactory(u
                     -> u.getValue().emailProperty());
             
-             TableColumn<Usuario, LocalDate> colunaAniver
+            TableColumn<Usuario, LocalDate> colunaAniversario
                     = new TableColumn<>("Aniversário");
-            colunaAniver.setCellValueFactory(u
-                    -> u.getValue().aniverProperty());
-
+            colunaAniversario.setCellValueFactory(u
+                    -> u.getValue().aniversarioProperty());
+            
+           
             tabelaUsuarios.getColumns().addAll(colunaID,
                     colunaNome, colunaFone, colunaLogin,
-                    colunaPerfil, colunaEmail, colunaAniver);
+                    colunaPerfil, colunaEmail, colunaAniversario);
 
 //            tabelaUsuarios.setItems(lista);
             FilteredList<Usuario> listaFiltrada = new
                 FilteredList<>(lista, p -> true);
             
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
             txtPesquisar.textProperty().addListener((obs, oldVal, newVal) -> {
                 listaFiltrada.setPredicate(usuario -> {
                     if(newVal == null || newVal.isEmpty()){
                         return true;
                     }
                     String filtro = newVal.toLowerCase();
+                    
                     return usuario.getNome().toLowerCase().contains(filtro)
                             || usuario.getLogin().toLowerCase().contains(filtro)
                             || usuario.getFone().toLowerCase().contains(filtro)
-                            || usuario.getPerfil().toLowerCase().contains(filtro);
-                    //Mexer?
+                            || usuario.getPerfil().toLowerCase().contains(filtro)
+                            || usuario.getEmail().toLowerCase().contains(filtro)
+                            || (usuario.getAniversario() != null && usuario.getAniversario().toLocalDate().format(dtf).toLowerCase().contains(filtro));
                 });
             });
                 SortedList<Usuario> listaOrdenada = new SortedList<>(listaFiltrada);

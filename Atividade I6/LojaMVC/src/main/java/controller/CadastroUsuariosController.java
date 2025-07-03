@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 import model.Usuario;
 import model.UsuarioDAO;
 import util.AlertaUtil;
+import util.Validacoes;
 
 public class CadastroUsuariosController {
     Stage stageCadastroUsuarios;
@@ -32,18 +34,19 @@ public class CadastroUsuariosController {
 
     @FXML
     private ComboBox<String> cbPerfil;
+    
+    @FXML
+    private DatePicker dtAniversario;
+
+    @FXML
+    private TextField txtEmail;
+
 
     @FXML
     private TextField txtLogin;
 
     @FXML
     private TextField txtNome;
-    
-    @FXML
-    private TextField txtEmail;
-   
-    @FXML
-    private DatePicker dpAniver;
 
     @FXML
     private PasswordField txtSenha;
@@ -51,7 +54,7 @@ public class CadastroUsuariosController {
     @FXML
     private TextField txtTelefone;
     
-    AlertaUtil alerta = new AlertaUtil();
+    Validacoes validacao = new Validacoes();
 
     @FXML
     void btnExcluirClick(ActionEvent event) throws SQLException {
@@ -72,37 +75,53 @@ public class CadastroUsuariosController {
 
     @FXML
     void btnIncluirAlterarClick(ActionEvent event) throws SQLException {
-        if(txtNome.getText().isEmpty()){
-           alerta.mostrarAviso("Campo Vazio", "Campo nome está vazio, por favor preencher com um valor válido!");
-           return;
-        } else if(txtTelefone.getText().isEmpty()) {
-           alerta.mostrarAviso("Campo Vazio", "Campo telefone está vazio, por favor preencher com um valor válido!");
-           return; 
-        }else if(txtLogin.getText().isEmpty()) {
-           alerta.mostrarAviso("Campo Vazio", "Campo login está vazio, por favor preencher com um valor válido!");
-           return; 
-        }else if(txtSenha.getText().isEmpty()) {
-           alerta.mostrarAviso("Campo Vazio", "Campo senha está vazio, por favor preencher com um valor válido!");
-           return; 
-        }else if(cbPerfil.getSelectionModel().getSelectedItem().isEmpty()) {
-           alerta.mostrarAviso("Campo Vazio", "Campo perfil está vazio, por favor preencher com um valor válido!");
-           return; 
-        }else if(txtEmail.getText().isEmpty()) {
-           alerta.mostrarAviso("Campo Vazio", "Campo email está vazio, por favor preencher com um valor válido!");
-           return; 
-        }else if(dpAniver.getValue() == null) {
-           alerta.mostrarAviso("Campo Vazio", "Campo aniversário está vazio, por favor preencher com um valor válido!");
-           return; 
+         
+        String nome = txtNome.getText();
+        String telefone = txtTelefone.getText();
+        String login = txtLogin.getText();
+        String senha = txtSenha.getText();
+        String perfil = cbPerfil.getValue();
+        String email = txtEmail.getText();
+        LocalDate aniversario = dtAniversario.getValue();
+        
+        java.sql.Date dataAniversario = null;
+
+        if (aniversario != null) {
+            dataAniversario = java.sql.Date.valueOf(aniversario);
+        }
+
+        // VALIDAÇÕES BÁSICAS
+        if (nome.isEmpty() || telefone.isEmpty() || login.isEmpty() ||
+            senha.isEmpty() || email.isEmpty()) {
+            AlertaUtil.mostrarErro("Erro", "Todos os campos devem ser preenchidos.");
+            return;
         }
         
-        if(usuarioSelecionado == null){
+        if(validacao.ValidaFormatoTelefone(txtTelefone.getText())){
+            return;
+        }
+        
+        if(validacao.ValidaFormatEmail(txtEmail.getText())){
+            return;
+        }
+        
+        if (usuarioSelecionado == null) {
             incluir(txtNome.getText(),
-            txtTelefone.getText(), txtLogin.getText(),
-            txtSenha.getText(), cbPerfil.getValue(), txtEmail.getText(), dpAniver.getValue());
+                    txtTelefone.getText(),
+                    txtLogin.getText(),
+                    txtSenha.getText(),
+                    cbPerfil.getValue(),
+                    txtEmail.getText(),
+                    dataAniversario); 
         } else {
-            alterar(usuarioSelecionado.getId(), txtNome.getText(),
-                    txtTelefone.getText(), txtLogin.getText(),
-                    txtSenha.getText(), cbPerfil.getValue(), txtEmail.getText(), dpAniver.getValue());
+            alterar(usuarioSelecionado.getId(),
+                    txtNome.getText(),
+                    txtTelefone.getText(),
+                    txtLogin.getText(),
+                    txtSenha.getText(),
+                    cbPerfil.getValue(),
+                    txtEmail.getText(),
+                    dataAniversario);  
         }
     }
 
@@ -124,15 +143,19 @@ public class CadastroUsuariosController {
             txtTelefone.setText(user.getFone());
             txtLogin.setText(user.getLogin());
             txtSenha.setText(user.getSenha());
+            txtEmail.setText(user.getEmail());
+            if(user.getAniversario() != null){
+            dtAniversario.setValue(user.getAniversario().toLocalDate());
+            } else {
+            dtAniversario.setValue(null);
+            }       
             cbPerfil.getItems().addAll("admin", "user");
             cbPerfil.setValue(user.getPerfil());
-            txtEmail.setText(user.getEmail());
-            dpAniver.setValue(user.getAniversario());
-        }
+            }
     }
 
     void incluir(String nome, String fone, 
-        String login, String senha, String perfil, String email, LocalDate aniversario) throws SQLException {
+        String login, String senha, String perfil, String email, Date aniversario) throws SQLException {
         Usuario usuario = new Usuario(nome, fone, login,
         senha, perfil, email, aniversario);
         new UsuarioDAO().salvar(usuario);
@@ -145,7 +168,7 @@ public class CadastroUsuariosController {
     }
     
     void alterar(int id, String nome, String fone, String login,
-            String senha, String perfil,  String email, LocalDate aniversario) throws SQLException{
+            String senha, String perfil, String email, Date aniversario) throws SQLException{
         Usuario usuarioAlterado = new Usuario(id, nome, fone, login,
         senha, perfil, email, aniversario);
         new UsuarioDAO().alterar(usuarioAlterado);
