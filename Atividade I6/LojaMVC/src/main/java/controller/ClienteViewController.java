@@ -1,14 +1,10 @@
 package controller;
 
-import java.sql.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import model.Cliente;
+import javafx.stage.Stage;
 
 public class ClienteViewController {
 
@@ -16,22 +12,7 @@ public class ClienteViewController {
     private Button btnSalvar;
 
     @FXML
-    private TableColumn<Cliente, Date> colData;
-
-    @FXML
-    private TableColumn<Cliente, String> colEndereco;
-
-    @FXML
-    private TableColumn<Cliente, String> colNome;
-
-    @FXML
-    private TableColumn<Cliente, String> colTelefone;
-
-    @FXML
-    private TableView<Cliente> tableClientes;
-
-    @FXML
-    private DatePicker txtData;
+    private TextField txtDataNascimento;
 
     @FXML
     private TextField txtEndereco;
@@ -42,11 +23,13 @@ public class ClienteViewController {
     @FXML
     private TextField txtTelefone;
 
-    
     @FXML
     void btnSalvarOnActionPerformed(ActionEvent event) {
-        
-        
+
+    }
+
+    void setStage(Stage telaCadastroCliente) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

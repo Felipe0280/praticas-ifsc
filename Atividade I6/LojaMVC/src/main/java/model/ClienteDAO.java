@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import util.AlertaUtil;
 
 public class ClienteDAO {
     
@@ -22,6 +21,7 @@ public class ClienteDAO {
             stmt.setDate(4, cliente.getDataNascimento());
             
             stmt.executeUpdate();
+            
             System.out.println("Cliente inserido com sucesso!");
         }catch(SQLException e){
             System.out.println("Erro ao inserir cliente: " + e.getMessage());
