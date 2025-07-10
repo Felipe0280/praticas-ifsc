@@ -1,6 +1,5 @@
 package controller;
 
-import dal.ConexaoBD;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -8,12 +7,15 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -34,6 +36,9 @@ public class LoginController {
 
     @FXML
     private ImageView imgBancoOnline;
+    
+    @FXML
+    private Hyperlink hpCadastro;
     
     @FXML
     private Button bntFechar;
@@ -59,28 +64,45 @@ public class LoginController {
     void bntLogarClick(ActionEvent event) throws IOException, SQLException {
         processarLogin();
     }
-
+     
+    @FXML
+    void onClickhpCadastro(ActionEvent event)  throws SQLException{
+        try {
+            URL url = new File("src/main/java/view/CadastroUsuarios.fxml").toURI().toURL();
+            FXMLLoader loader = new FXMLLoader(url);
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException ex) {
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            Stage telaCadastroUsuarios = new Stage();
+            
+            CadastroUsuariosController cadc = loader.getController();
+            
+            cadc.setStage(telaCadastroUsuarios);
+            
+            telaCadastroUsuarios.setOnShown(evento -> {
+                cadc.ajustarElementosJanela(null);
+            });
+            
+            
+            Scene scene = new Scene(root);
+            
+            telaCadastroUsuarios.setTitle("Cadastro de Usuários");
+            telaCadastroUsuarios.setScene(scene);
+            telaCadastroUsuarios.show();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void setStage(Stage stage) {
         this.stageLogin = stage;
     }
 
     public void verificarBanco() {
-//        this.conexao = ConexaoBD.conectar();
-//
-//        if (this.conexao != null) {
-//            System.out.println("Conectou no banco de dados");
-//        } else {
-//            System.out.println("Problemas na conexão com o banco de dados");
-//        }
-    
-//    if(dao.bancoOnline()){
-//        lblDB.setText("Banco de Dados: Online");
-//        lblDB.setStyle("-fx-text-fill: blue;");
-//    } else {
-//        lblDB.setText("Banco de Dados: Offline");
-//        lblDB.setStyle("-fx-text-fill: red;");
-//    }
-
        if(dao.bancoOnline()){
            File arquivo = new File("src/main/resources/icones/dbok.png");
            Image imagem = new Image(arquivo.toURI().toString());
@@ -112,11 +134,9 @@ public class LoginController {
                 }
                 abrirTelaPrincipal(listaDados);
             } else {
-//                System.out.println("Usuário e senha invalidos!");
                   AlertaUtil.mostrarErro("Erro", "Usuário e senha inválidos!");
             }
         } else {
-//            System.out.println("Verifique as informações!");
                 AlertaUtil.mostrarErro("Erro", "Verifique as informações!");
         }
 

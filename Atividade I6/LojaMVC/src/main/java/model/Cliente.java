@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Cliente {
     
@@ -8,7 +9,18 @@ public class Cliente {
     private String nome;
     private String telefone;
     private String endereco;
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
+
+    public Cliente() {
+    }
+
+    public Cliente(int id, String nome, String telefone, String endereco, LocalDate dataNascimento) {
+        this.id = id;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.endereco = endereco;
+        this.dataNascimento = dataNascimento;
+    }
 
     public int getId() {
         return id;
@@ -26,7 +38,7 @@ public class Cliente {
         return endereco;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
@@ -46,7 +58,13 @@ public class Cliente {
         this.endereco = endereco;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }  
+    
+    @Override
+    public String toString() {
+        return nome;
+    }
+
 }

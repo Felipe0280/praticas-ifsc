@@ -2,23 +2,22 @@ package model;
 
 import dal.ConexaoBD;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ClienteDAO {
+public class ClienteDAO extends GenericDAO{
     
     public void inserirCliente(Cliente cliente) throws SQLException{
-        String sql = "INSERT INTO clientes(nome, telefone, endereco, data_nascimento) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO cliente(nome, telefone, endereco, data_nascimento) VALUES (?,?,?,?)";
         
         try(Connection conn =  ConexaoBD.conectar();
                 PreparedStatement stmt = conn.prepareStatement(sql)){
            
-            stmt.setString(1, cliente.getNome());
-            stmt.setString(2, cliente.getTelefone());
-            stmt.setString(3, cliente.getEndereco());
-            stmt.setDate(4, cliente.getDataNascimento());
+            save(sql, cliente.getNome(), cliente.getTelefone(), cliente.getEndereco(), cliente.getDataNascimento());
             
             stmt.executeUpdate();
             
@@ -28,26 +27,62 @@ public class ClienteDAO {
         }
         }
     
-    public void listarClientes() throws SQLException{
-        String sql = "SELECT * FROM clientes";
-        
-        try(Connection conn = ConexaoBD.conectar();
-                PreparedStatement stmt = conn.prepareStatement(sql)){
-                ResultSet rs = stmt.executeQuery();
-                
-            while(rs.next()){
-                int id = rs.getInt("id");
-                String nome = rs.getString("nome");
-                String telefone = rs.getString("telefone");
-                String endereco = rs.getString("endereco");
-                Date nascimento = rs.getDate("data_nascimento");
-                
-                System.out.println("ID: " + id + "\nNome: " + nome + "\nTelefone: " + telefone +
-                        "\nEndereço: " + endereco + "\nData de nascimento: " + nascimento);
-            }           
-        }catch(SQLException e){
-            System.out.println("Erro ao listar clientes: " + e.getMessage());
+     public void atualizarCliente(Cliente cliente) throws SQLException {
+        String sql = "UPDATE cliente SET nome = ?, telefone = ?, endereco = ?, data_nascimento = ? WHERE id = ?";
+
+        try (Connection conn = ConexaoBD.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            update(sql, cliente.getId(), cliente.getNome(), cliente.getTelefone(), cliente.getEndereco(), cliente.getDataNascimento());
+
+            stmt.executeUpdate();
+
+            System.out.println("Cliente atualizado com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("Erro ao atualizar cliente: " + e.getMessage());
+            throw e;
+        }
     }
+
+    public List<Cliente> selecionarClientes() throws SQLException {
+        List<Cliente> lista = new ArrayList<>();
+        String sql = "SELECT * FROM cliente";
+
+        try (Connection conn = ConexaoBD.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                LocalDate dataNascimento = LocalDate.parse(rs.getString("data_nascimento"));
+                    
+                    Cliente object = new Cliente(rs.getInt("idCliente"), rs.getString("nome"), rs.getString("telefone"),
+                        rs.getString("endereco"), dataNascimento);
+                    
+                    lista.add(object);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao selecionar clientes: " + e.getMessage());
+            throw e;
+        }
+
+        return lista;
     }
     
+    public int idClientes() throws SQLException {
+        String sql = "SELECT * FROM cliente";
+        int n = 0;
+        try (Connection conn = ConexaoBD.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                n++;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao selecionar clientes: " + e.getMessage());
+            throw e;
+        }
+
+        return n + 1;
+    }
 }
