@@ -16,7 +16,7 @@
             <TableColumn fx:id="colunaValor" minWidth="8.0" prefWidth="101.5999755859375" text="Valor" />
             <TableColumn fx:id="colunaEstoque" minWidth="6.4000244140625" prefWidth="193.60002441406255" text="Quantidade em estoque" />
          </columns></TableView>
-      <Label layoutX="145.0" layoutY="14.0" text="ITENS PARA VENDA">
+      <Label layoutX="233.0" layoutY="24.0" prefHeight="43.0" prefWidth="134.0" text="Produtos" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="29.0" />
          </font>
