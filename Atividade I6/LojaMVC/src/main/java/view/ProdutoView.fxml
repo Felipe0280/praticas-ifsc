@@ -6,8 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="420.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="controller.ProdutoViewController">
+<AnchorPane id="AnchorPane" prefHeight="420.0" prefWidth="600.0" style="-fx-background-color: #ffc7f0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProdutoViewController">
    <children>
       <TextArea fx:id="txtDescricaoProduto" layoutX="63.0" layoutY="98.0" prefHeight="124.0" prefWidth="475.0" />
       <Label layoutX="63.0" layoutY="75.0" text="Descrição do produto:" />
